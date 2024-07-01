@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-
+import {useDispatch, useSelector} from 'react-redux' 
+import { signInFaiilure, sigInStart, signInSuccess } from '../redux/user/userSlice'
 export default function Signin() {
   const [formdata, setFormData] = useState({})
-  const [error, setError] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const {error, loading} = useSelector((state) => state.user )
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const handleChange = (e) => {
     setFormData({
       ...formdata,
@@ -14,9 +15,9 @@ export default function Signin() {
     })
   }
    const handlesubmit = async (e) => {
-   try {
      e.preventDefault()
-     setIsLoading(true)
+   try {
+     dispatch(sigInStart())
      const res = await fetch('api/auth/signin', 
        {
          method:'POST',
@@ -29,16 +30,14 @@ export default function Signin() {
  
      const data = await res.json()
      if(data?.success == false){
-      setError(data.message)
-      setIsLoading(false)
+      dispatch(signInFaiilure(data.message))
      }else{
-      setIsLoading(false)
+      dispatch(signInSuccess(data))
       navigate('/')
      
      }
    } catch (error) {
-    setError('All fields are required !')
-    setIsLoading(false)
+    dispatch(signInFaiilure('All fields are required !'))
    }
     
    }
@@ -47,8 +46,8 @@ export default function Signin() {
       <h1 className='text-3xl my-7 text-center font-semibold'>Sign in</h1>
       <form onSubmit={handlesubmit} className='flex flex-col gap-4'>
         <input type="text" placeholder='emial' className='border p-3 rounded-lg' id='email' onChange={handleChange}/>
-        <input type="text" placeholder='password' className='border p-3 rounded-lg' id='password' onChange={handleChange}/>
-        <button disabled = {isLoading} className='bg-slate-700 text-white p-3 hover:opacity-95 uppercase rounded-lg disabled:opacity-80'>{isLoading ? 'Loading...' : 'Sign in'}</button>
+        <input type="password" placeholder='password' className='border p-3 rounded-lg' id='password' onChange={handleChange}/>
+        <button disabled = {loading} className='bg-slate-700 text-white p-3 hover:opacity-95 uppercase rounded-lg disabled:opacity-80'>{loading ? 'Loading...' : 'Sign in'}</button>
       </form>
       <p className='text-red-800'>{error}</p>
       <div className="flex items-center gap-2 mt-5">
