@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required: true,
+    },
+    avatar:{
+        type:String,
+        default:"https://i.ibb.co/yW0ttLr/3d-illustration-person-with-sunglasses-23-2149436188.jpg"
     }
 }, {timestamps:true})
 
