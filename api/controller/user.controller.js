@@ -1,6 +1,5 @@
 import User from "../modals/user.model.js"
-import { errorHandler } from "../utils/error"
-import { verifyToken } from "../utils/verifyUser"
+import { errorHandler } from "../utils/error.js"
 import bcryptjs from 'bcryptjs'
 export const test = (req,res) => {
         res.send({
@@ -9,7 +8,7 @@ export const test = (req,res) => {
 }
 
 export const updateUser = async (req, res, next) => {
-    if(req.user._id !== req.params.id) return next(errorHandler(401, "You can only update your own account!"))
+    if(req.user.id !== req.params.id) return next(errorHandler(401, "You can only update your own account!"))
     
     try {
         if(req.body.password){
