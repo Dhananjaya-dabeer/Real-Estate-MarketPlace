@@ -52,13 +52,14 @@ export default function Profile() {
   let  base64String ;
   const reader = new FileReader()
   reader.onload = async function(event) {
-     base64String = event.target.result.split(',')[1];try {
+     base64String = event.target.result.split(',')[1];
+     try {
       // Validate the base64 string
       if (!base64String) {
           throw new Error('Invalid base64 string');
       }
       
-      const response = await fetch('https://api.imgbb.com/1/upload?expiration=15552000&key=7fe2951ad3927e7e36eb19fe99b207c7', {
+      const response = await fetch(`https://api.imgbb.com/1/upload?expiration=15552000&key=${import.meta.env.VITE_IMGBB_API_KEY}`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
