@@ -33,7 +33,7 @@ export const signin = async(req, res, next) => {
             if(!validPassword) return next(errorHandler(401, 'Either email or password is wrong'))
             const token = jwt.sign({id:validUser._id}, process.env.JWT_SECRET)
             const {password:code, ...rest} = validUser._doc
-            res.cookie('access_token', token, {httpOnly: true}).status(200).json(rest)
+            res.cookie('access_token', token, {httpOnly: true, maxAge: new Date(Date.now() + 10 * 365 * 24 * 60 * 60 * 1000)}).status(200).json(rest)
             
       } catch (error) {
             next(error)
@@ -46,7 +46,7 @@ export const google = async (req, res, next) => {
             if(user){
                   const token = jwt.sign({id:user._id}, process.env.JWT_SECRET)
                   const {password:pass, ...rest} = user._doc
-                  res.cookie('access_token', token, {httpOnly:true}).status(201).json(rest)
+                  res.cookie('access_token', token, {httpOnly:true, maxAge:new Date(Date.now() + 10 * 365 * 24 * 60 * 60 * 1000)}).status(201).json(rest)
             }else{
                   const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8)
                   const hashedPassword = bcryptjs.hashSync(generatedPassword, 10)
@@ -54,7 +54,7 @@ export const google = async (req, res, next) => {
                   await newUser.save()
                   const token = jwt.sign({id:newUser._id}, process.env.JWT_SECRET)
                   const {password:pass, ...rest} =  newUser._doc
-                  res.cookie('access_token', token, {httpOnly: true}).status(200).json(rest)
+                  res.cookie('access_token', token, {httpOnly: true, maxAge:new Date(Date.now() + 10 * 365 * 24 * 60 * 60 * 1000)}).status(200).json(rest)
             }
       } catch (error) {
             next(error)

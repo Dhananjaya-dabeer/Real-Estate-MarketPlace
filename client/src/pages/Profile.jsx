@@ -160,8 +160,10 @@ export default function Profile() {
         return
       }
       setListings([...data])
-    }
       setShowListing(!showListing)
+      return
+    }
+    listings.length > 0 && setShowListing(!showListing)
     } catch (error) {
       setListingError(true)
     }
@@ -180,7 +182,9 @@ export default function Profile() {
       }
 
       setListings(prev => prev.filter((list) => list._id !== listingId))
-      
+      if(listings.length === 0){
+        setShowListing(false)
+      }
     } catch (error) {
       console.error(error)
     }
