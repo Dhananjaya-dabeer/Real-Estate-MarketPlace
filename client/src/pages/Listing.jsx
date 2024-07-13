@@ -37,7 +37,7 @@ useEffect(() => {
     }
    })()
     },[listingId])
-    console.log(listing)
+ 
   return (
     <main>
         {isLoading && <div className='flex items-center justify-center h-[90vh]'><img src='https://i.gifer.com/ZKZg.gif' alt='Loading....' className='self-center w-12 h-12'></img></div>}
