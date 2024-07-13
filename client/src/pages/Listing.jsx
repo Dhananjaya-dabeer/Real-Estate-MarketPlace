@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {Swiper, SwiperSlide} from 'swiper/react'
 import SwiperCore from 'swiper'
 import {Navigation} from 'swiper/modules'
 import 'swiper/css/bundle'
 import { FaBath, FaBed, FaChair, FaMapMarkedAlt, FaMapMarkerAlt, FaParking, FaShare } from 'react-icons/fa'
+import {useSelector} from 'react-redux'
+import Contact from '../components/Contact'
 
 export default function Listing() {
     SwiperCore.use([Navigation])
@@ -13,6 +15,8 @@ export default function Listing() {
     const [isLoading, setIsLoading] = useState(false)
     const {listingId} = useParams()
     const [copied, setCopied] = useState(false)
+    const {currentUser} = useSelector((state) => state.user)
+    const [contact, setContact] = useState(false)
 useEffect(() => {
    ;(async() => {
     try {
@@ -112,6 +116,14 @@ useEffect(() => {
                 {listing.furnished  ? `Furnished` : `Unfurnished`}
               </li>
             </ul>
+            {(currentUser) ? 
+              (listing.userRef !== currentUser._id && !contact) && <button className='text-white bg-slate-700 rounded-lg p-3 text-md uppercase hover:opacity-95' onClick={() => setContact(true)}>Contact Landlord</button>
+            : 
+              <Link to={'/signup'} className='text-white bg-red-900 rounded-lg p-3 text-md uppercase hover:opacity-95 text-center'>
+              <button className=''>Signup/Signin to contact Landlord</button>
+              </Link>
+             }
+             {contact && <Contact listing = {listing}/>}
           </div>
             </>}
 
