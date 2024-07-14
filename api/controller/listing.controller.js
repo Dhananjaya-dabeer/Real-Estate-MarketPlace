@@ -65,25 +65,25 @@ export const search = async (req, res, next) => {
     try {
         const limit = (req.query.limit) || 9;
         const startIndex = (req.query.startIndex) || 0
-        const offer = req.query.offer
+        let offer = req.query.offer
 
-        if(offer === undefined || offer === false){
+        if(offer === undefined || offer === false || 'false'){
             offer = {$in : [false, true]}
         }
-        const furnished = req.query.furnished
+        let furnished = req.query.furnished
 
-        if(furnished === undefined || furnished == false){
+        if(furnished === undefined || furnished == false || 'false'){
             furnished = {$in : [false, true]}
         }
 
-        const parking = req.query.parking
+        let parking = req.query.parking
 
-        if(parking === undefined || parking === false){
+        if(parking === undefined || parking === false || 'false'){
             parking = {$in : [false, true]}
         }
 
-        const type = req.query.type
-        if(type === undefined || type === all){
+        let type = req.query.type
+        if(type === undefined || type === 'all'){
             type = {$in : ['sale', 'rent']}
         }
 
@@ -100,7 +100,7 @@ export const search = async (req, res, next) => {
             parking,
             type,
         }).sort({[sort] : order}).limit(limit).skip(startIndex)
-
+        console.log(typeof offer)
         return res.status(200).json(listing)
     } catch (error) {
         next(error)
