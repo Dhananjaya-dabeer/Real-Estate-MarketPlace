@@ -100,7 +100,6 @@ export const search = async (req, res, next) => {
             parking,
             type,
         }).sort({[sort] : order}).limit(limit).skip(startIndex)
-        console.log(typeof offer)
         return res.status(200).json(listing)
     } catch (error) {
         next(error)

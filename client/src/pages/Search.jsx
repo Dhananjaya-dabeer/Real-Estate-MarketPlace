@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import ListingCard from '../components/ListingCard'
 
 export default function Search() {
     const navigate = useNavigate()
@@ -77,7 +78,6 @@ export default function Search() {
             const searchQuery = urlParams.toString()
             const res = await fetch(`/api/listing/get?${searchQuery}`)
             const data = await res.json()
-            console.log(data)
             setListing(data)
             setIsLoading(false)
         })()
@@ -141,8 +141,17 @@ export default function Search() {
                <button className='border bg-slate-700 text-white p-3 rounded-lg hover:opacity-95 uppercase'>Search</button>
             </form>
         </div>
-        <div className="">
+        <div className="flex-1">
             <h1 className='text-3xl font-semibold text-slate-700  border-b p-3 mt-5 '>Listing results:</h1>
+            <div className='p-7 flex  flex-wrap gap-4'>
+                {isLoading ?(<div className='flex-1 flex items-center justify-center h-[60vh] '><img src='https://i.gifer.com/ZKZg.gif' alt='Loading....' className='self-center w-12 h-12'></img></div>) : (
+                    listing.length === 0 ? (<p>No listing found!</p>) : (
+                       listing.map((listItem) => (
+                        <ListingCard key={listItem._id} listing = {listItem}/>
+                       ))
+                    )
+                )}
+            </div>
         </div>
     </div>
   )
