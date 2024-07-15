@@ -16,6 +16,7 @@ export default function Search() {
     })
     const [isLoading, setIsLoading] = useState(false)
     const [listing, setListing] = useState([])
+    const [showMore, setShowMore] = useState(false)
     console.log(listing)
     const handleChange = (e) => {
         if(e.target.id === 'all' || e.target.id === 'rent' || e.target.id === 'sale'){
@@ -29,10 +30,10 @@ export default function Search() {
         }
 
         if(e.target.id === 'sort_order'){
-            const order = e.target.value.split('_')[0] || 'created_at'
+            const order = e.target.value.split('_')[1] || 'desc'
 
-            const sort = e.target.value.split('_')[1] || 'desc'
-
+            const sort = e.target.value.split('_')[0] ||  'created_at'
+            console.log(order, sort)
             setSidebarData({...sidebarData, sort, order})
         }
     }
@@ -78,11 +79,31 @@ export default function Search() {
             const searchQuery = urlParams.toString()
             const res = await fetch(`/api/listing/get?${searchQuery}`)
             const data = await res.json()
+            if(data.length > 8) {
+                setShowMore(true)
+            }else{
+                setShowMore(false)
+            }
             setListing(data)
             setIsLoading(false)
         })()
     },[location.search])
 
+    const onShowMoreClick = async ()  => {
+        const numberOfListings = listing.length
+        const startIndex  = numberOfListings
+        const urlParams = new URLSearchParams(location.search)
+        urlParams.set('startIndex',startIndex)
+        const searchQuery = urlParams.toString()
+        const res = await fetch(`/api/listing/get?${searchQuery}`)
+        const data = await res.json()
+        if(data.length < 9){
+            setShowMore(false)
+        }
+        setListing([...listing, ...data])
+    }
+
+    console.log(listing)
 
   return (
     <div className='flex flex-col md:flex-row'>
@@ -151,6 +172,9 @@ export default function Search() {
                        ))
                     )
                 )}
+                    {showMore && 
+                        <p onClick={onShowMoreClick} className='text-green-700 hover:underline w-full text-center cursor-pointer'>Show More</p>
+                    }
             </div>
         </div>
     </div>
