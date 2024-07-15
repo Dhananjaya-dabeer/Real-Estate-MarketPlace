@@ -63,21 +63,20 @@ export const getListing = async(req, res, next) => {
 
 export const search = async (req, res, next) => {
     try {
-        console.log(req.query)
         const limit = (req.query.limit) || 9;
         const startIndex = (req.query.startIndex) || 0
-        let offer = req.query.offer == 'true' ? true : false
+        let offer = req.query.offer 
 
         if(offer == undefined || offer === false || offer ==='false'){
             offer = {$in : [false, true]}
         }
-        let furnished = req.query.furnished == 'true' ? true : false
+        let furnished = req.query.furnished
 
         if(furnished === undefined || furnished === false || furnished === 'false'){
             furnished = {$in : [false, true]}
         }
 
-        let parking = req.query.parking == 'true' ? true : false
+        let parking = req.query.parking 
 
         if(parking === undefined || parking === false || parking === 'false'){
             parking = {$in : [false, true]}

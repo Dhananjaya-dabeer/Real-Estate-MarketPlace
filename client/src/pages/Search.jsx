@@ -103,7 +103,6 @@ export default function Search() {
         setListing([...listing, ...data])
     }
 
-    console.log(listing)
 
   return (
     <div className='flex flex-col md:flex-row'>
