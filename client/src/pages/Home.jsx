@@ -11,9 +11,11 @@ export default function Home() {
   const [offerListing, setOfferListing] = useState([])
   const [rentListing, setRentListing] = useState([])
   const [saleListing, setSaleListing] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   console.log(offerListing)
   SwiperCore.use([Navigation])
   useEffect(() => {
+    setIsLoading(true)
     const fetchOfferListing = async () => {
       try {
         const res = await fetch(`/api/listing/get?offer=true&limit=4`)
@@ -40,14 +42,17 @@ export default function Home() {
        const res = await fetch(`/api/listing/get?type=sale&limit=4`)
        const data = await res.json()
        setSaleListing(data)
+       setIsLoading(false)
      } catch (error) {
       console.log(error)
      }
 
     }
   },[])
+  
   return (
     <div>
+   {isLoading ? <div className='flex items-center justify-center h-screen'><img src='https://i.gifer.com/ZKZg.gif' alt='Loading....' className='self-center w-12 h-12'></img></div> : <>
       {/* top */}
       <div className='flex flex-col gap-6 py-28 px-3 max-w-6xl mx-auto '>
         <h1 className='text-slate-700 font-bold text-3xl lg:text-6xl'>
@@ -123,6 +128,7 @@ export default function Home() {
        </div>
        }
       </div>
+    </>}
     </div>
   )
 }
