@@ -24,6 +24,7 @@ export default function Home() {
         fetchRentListing()
       } catch (error) {
         console.log(error)
+        setIsLoading(false)
       }
     }
     fetchOfferListing()
@@ -35,6 +36,7 @@ export default function Home() {
         fetchSaleListing()
       } catch (error) {
         console.log(error)
+        setIsLoading(false)
       }
     }
     const fetchSaleListing = async () => {
@@ -45,6 +47,7 @@ export default function Home() {
        setIsLoading(false)
      } catch (error) {
       console.log(error)
+      setIsLoading(false)
      }
 
     }
@@ -82,7 +85,7 @@ export default function Home() {
       </Swiper>
       {/* listing results for offer, sale and rent */}
       <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10'>
-       {offerListing.length &&
+       {offerListing.length > 0 &&
          <div className="">
          <div className="my-3">
            <h2 className='text-slate-600 text-2xl font-semibold'>Recent offers</h2>
@@ -97,7 +100,7 @@ export default function Home() {
          </div>
        </div>
        }
-       {rentListing.length &&
+       {rentListing.length > 0 &&
          <div className="">
          <div className="my-3">
            <h2 className='text-slate-600 text-2xl font-semibold'>Recent places for rent</h2>
@@ -112,7 +115,7 @@ export default function Home() {
          </div>
        </div>
        }
-       {saleListing.length &&
+       {saleListing.length > 0 &&
          <div className="">
          <div className="my-3">
            <h2 className='text-slate-600 text-2xl font-semibold'>Recent places for sale</h2>
