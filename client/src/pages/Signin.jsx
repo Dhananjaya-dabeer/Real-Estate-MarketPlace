@@ -32,11 +32,9 @@ export default function Signin() {
      const data = await res.json()
      if(data?.success == false){
       dispatch(signInFaiilure(data.message))
-     }else{
-      dispatch(signInSuccess(data))
-      navigate('/')
-     
      }
+     dispatch(signInSuccess(data))
+     navigate('/')
    } catch (error) {
     dispatch(signInFaiilure('All fields are required !'))
    }
